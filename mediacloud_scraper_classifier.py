@@ -84,7 +84,7 @@ def extract_text_from_url(url):
         return title + "\n\n" + "\n".join(content) if len(content) >= 2 else None
     except:
         return None
-df_export["text"] = df_export["URL"].apply(lambda url: extract_text_from_url(url) if pd.notnull(url) else None)
+
 def drop_near_duplicates(df, text_col="text", url_col="url", text_threshold=TEXT_SIM_THRESHOLD):
     df = df.copy()
     vectorizer = TfidfVectorizer(stop_words="english", max_features=10000)
@@ -137,7 +137,7 @@ if st.button("Esegui ricerca e classificazione"):
                     "confidence": round(confidence, 3) if confidence else 0.0,
                     "summary": summary if summary else ""
                 })
-
+        
         df_out = pd.DataFrame(results)
         df_out_clean = drop_near_duplicates(df_out, text_col="text", url_col="url")
 
