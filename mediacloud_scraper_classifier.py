@@ -139,7 +139,10 @@ if st.button("Esegui ricerca e classificazione"):
                 })
         
         df_out = pd.DataFrame(results)
-        df_out_clean = drop_near_duplicates(df_out, text_col="text", url_col="url")
+        if df_out.empty:
+             st.warning("⚠️ Nessun testo valido trovato tra gli URL estratti.")
+        else:
+            df_out_clean = drop_near_duplicates(df_out, text_col="text", url_col="url", text_threshold=TEXT_SIM_THRESHOLD)
 
         st.download_button(
             label="📥 Scarica risultati in Excel",
