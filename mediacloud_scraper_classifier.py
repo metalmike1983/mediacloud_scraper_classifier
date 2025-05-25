@@ -146,7 +146,9 @@ if st.button("Esegui ricerca e classificazione"):
 
         st.download_button(
             label="📥 Scarica risultati in Excel",
-            data=df_out_clean.to_excel(index=False, engine="openpyxl"),
+            output = io.BytesIO()
+            df_out_clean.to_excel(output, index=False, engine="openpyxl"),
+            data=output.getvalue(),
             file_name=f"mediacloud_classified_{country.lower()}.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
