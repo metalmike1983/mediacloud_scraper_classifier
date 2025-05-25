@@ -117,7 +117,7 @@ if st.button("Esegui ricerca e classificazione"):
             query=query,
             start_date=start_date,
             end_date=end_date,
-            collection_ids=[collection_id]
+            collection_ids=[str(collection_id)]
         )
 
         results = []
