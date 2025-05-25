@@ -143,11 +143,11 @@ if st.button("Esegui ricerca e classificazione"):
              st.warning("⚠️ Nessun testo valido trovato tra gli URL estratti.")
         else:
             df_out_clean = drop_near_duplicates(df_out, text_col="text", url_col="url", text_threshold=TEXT_SIM_THRESHOLD)
-
+        
+        output = io.BytesIO()
+        df_out_clean.to_excel(output, index=False, engine="openpyxl")
         st.download_button(
             label="📥 Scarica risultati in Excel",
-            output = io.BytesIO(),
-            df_out_clean.to_excel(output, index=False, engine="openpyxl"),
             data=output.getvalue(),
             file_name=f"mediacloud_classified_{country.lower()}.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
