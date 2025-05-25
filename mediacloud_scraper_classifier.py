@@ -104,12 +104,12 @@ def drop_near_duplicates(df, text_col="text", url_col="url", text_threshold=TEXT
 # === STREAMLIT UI ===
 st.title("Media Cloud Scraper + Classifier")
 
-country = st.selectbox("Scegli il Paese:", collections_df['country'].sort_values().unique())
-topic = st.text_input("Inserisci il tema della policy:", "Food waste")
-start_date = st.date_input("Data inizio:", dt.date(2024, 1, 1))
-end_date = st.date_input("Data fine:", dt.date(2024, 1, 10))
+country = st.selectbox("Choose the country:", collections_df['country'].sort_values().unique())
+topic = st.text_input("Policy:", "Food waste")
+start_date = st.date_input("Start date:", dt.date(2024, 1, 1))
+end_date = st.date_input("End date:", dt.date(2024, 1, 10))
 
-if st.button("Esegui ricerca e classificazione"):
+if st.button("Search and classify"):
     try:
         collection_id = int(collections_df.loc[collections_df['country'] == country, 'collection_id'].values[0])
         query = f"{country} {topic} Policy"
@@ -140,7 +140,7 @@ if st.button("Esegui ricerca e classificazione"):
             })
 
         if not results:
-            st.warning("⚠️ Nessun testo valido trovato tra gli URL estratti.")
+            st.warning("⚠️ No valid results.")
         else:
             df_out = pd.DataFrame(results)
             df_out_clean = drop_near_duplicates(df_out, text_col="text", url_col="url", text_threshold=TEXT_SIM_THRESHOLD)
@@ -149,7 +149,7 @@ if st.button("Esegui ricerca e classificazione"):
             df_out_clean.to_excel(output, index=False, engine="openpyxl")
 
             st.download_button(
-                label="📥 Scarica risultati in Excel",
+                label="📥 Download Excel results",
                 data=output.getvalue(),
                 file_name=f"mediacloud_classified_{country.lower()}.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -157,4 +157,4 @@ if st.button("Esegui ricerca e classificazione"):
             st.dataframe(df_out_clean[["url", "label", "confidence", "summary"]])
 
     except Exception as e:
-        st.error(f"❌ Errore durante l'elaborazione: {e}")
+        st.error(f"❌ Error during the process: {e}")
