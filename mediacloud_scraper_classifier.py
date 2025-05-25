@@ -154,10 +154,10 @@ if st.button("Esegui ricerca e classificazione"):
                     "country": country,
                     "query": query,
                     "url": url,
-                    "text": text,
-                    "label": label,
-                    "confidence": round(confidence, 3),
-                    "summary": summary
+                    "text": text if text else "",
+                    "label": label if label else "",
+                    "confidence": round(confidence, 3) if confidence else 0.0,
+                    "summary": summary if summary else ""
                 })
 
         df_out = pd.DataFrame(results)
